@@ -1,1 +1,652 @@
-# smart-nfc-card2
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Business Portal</title>
+  <!-- Google Fonts for matching typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --navy: #072247;
+      --gold-mid: #e5b343;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #e9ecef;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .app-container {
+      position: relative;
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      background: radial-gradient(circle at 50% 45%, #ffffff 40%, #f5f2eb 100%);
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 36px 24px 42px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    }
+
+    .wave-top-right {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 185px;
+      height: 185px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .wave-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 115px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .content-wrapper {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      justify-content: space-evenly;
+      gap: 20px;
+    }
+
+    /* Circular Double-Gold Logo Frame */
+    .logo-ring-outer {
+      width: 248px;
+      height: 248px;
+      border-radius: 50%;
+      padding: 5px;
+      background: linear-gradient(135deg, #f3cd5d 0%, #c88f20 50%, #f5d36c 100%);
+      box-shadow: 0 10px 25px rgba(7, 34, 71, 0.08);
+      margin-top: 4px;
+    }
+
+    .logo-ring-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 4px solid #ffffff;
+      padding: 3.5px;
+      background: linear-gradient(135deg, #e7b544 0%, #f7d872 50%, #c68e20 100%);
+    }
+
+    .logo-circle {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #ffffff;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+
+    .logo-circle img {
+      width: 86%;
+      height: 86%;
+      object-fit: contain;
+    }
+
+    /* 4-Column Compact Round Icons Grid */
+    .grid-buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      width: 100%;
+      max-width: 370px;
+      margin: 10px 0;
+      justify-items: center;
+    }
+
+    .nav-card {
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      padding: 4px;
+      transition: transform 0.18s ease;
+    }
+
+    .nav-card:hover { transform: translateY(-3px); }
+    .nav-card:active { transform: scale(0.94); }
+
+    .icon-circle {
+      width: 66px;
+      height: 66px;
+      border-radius: 50%;
+      background-color: var(--navy);
+      border: 2px solid var(--gold-mid);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 7px;
+      box-shadow: 0 6px 14px rgba(7, 34, 71, 0.22);
+      overflow: hidden;
+    }
+
+    .icon-circle img {
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
+    }
+
+    .nav-label {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 11.5px;
+      color: var(--navy);
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    /* Thank You & 5 Stars Section */
+    .thankyou-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .thankyou-text {
+      font-family: 'Great Vibes', cursive;
+      font-size: 64px;
+      color: var(--navy);
+      line-height: 1;
+      text-shadow: 0 2px 4px rgba(7, 34, 71, 0.08);
+    }
+
+    .stars-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 4px;
+      cursor: pointer;
+    }
+
+    .star-icon {
+      width: 36px;
+      height: 36px;
+      filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.16));
+      transition: transform 0.2s ease;
+    }
+
+    .star-icon:hover { transform: scale(1.15); }
+
+    .provided-by {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--navy);
+      opacity: 0.78;
+      margin-top: 8px;
+      letter-spacing: 0.4px;
+    }
+
+    .version-text {
+      font-size: 8px;
+      font-weight: 500;
+      color: var(--navy);
+      opacity: 0.6;
+      margin-top: 2px;
+      letter-spacing: 0.3px;
+    }
+
+    /* Session Expired Lock Screen */
+    .session-expired-overlay {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      background: radial-gradient(circle at 50% 45%, #ffffff 40%, #f5f2eb 100%);
+      padding: 32px 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    }
+
+    .lock-badge {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      background: var(--navy);
+      border: 3px solid var(--gold-mid);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 25px rgba(7, 34, 71, 0.2);
+    }
+
+    .expired-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+
+    .expired-desc {
+      font-size: 14px;
+      color: #4a5568;
+      line-height: 1.6;
+      max-width: 300px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Locked / Session Expired Screen -->
+  <div class="session-expired-overlay" id="expiredOverlay">
+    <div class="lock-badge">
+      <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#e5b343" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+      </svg>
+    </div>
+    <h2 class="expired-title">Session Expired</h2>
+    <p class="expired-desc">Please scan the official QR code again to access this business portal.</p>
+  </div>
+
+  <!-- Main Business Portal Screen -->
+  <div class="app-container" id="mainAppContainer">
+    <!-- Top Right Decorative Waves -->
+    <svg class="wave-top-right" viewBox="0 0 200 200" fill="none">
+      <defs>
+        <linearGradient id="goldWaveTop" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#f6d365" />
+          <stop offset="50%" stop-color="#e5b343" />
+          <stop offset="100%" stop-color="#c58e22" />
+        </linearGradient>
+      </defs>
+      <path d="M55 0 C95 45, 165 55, 200 125 L200 0 Z" fill="url(#goldWaveTop)" />
+      <path d="M88 0 C120 35, 175 45, 200 105 L200 0 Z" fill="#072247" />
+      <path d="M125 40 C105 55, 118 82, 148 88 C178 94, 190 108, 200 122 L200 60 Z" fill="#072247" />
+    </svg>
+
+    <!-- Main Content -->
+    <div class="content-wrapper">
+      
+      <!-- Circular Logo Frame -->
+      <div class="logo-ring-outer">
+        <div class="logo-ring-inner">
+          <a class="logo-circle" id="logoContainer" href="javascript:void(0)">
+            <!-- Default Universal Royal Emblem -->
+            <svg viewBox="0 0 240 240" width="90%" height="90%" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="universalGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#f8dc7c"/>
+                  <stop offset="50%" stop-color="#e2ae3d"/>
+                  <stop offset="100%" stop-color="#c38b1e"/>
+                </linearGradient>
+              </defs>
+              <circle cx="120" cy="120" r="96" fill="none" stroke="url(#universalGold)" stroke-width="2.5" stroke-dasharray="4 6"/>
+              <path d="M78 102 L68 66 L96 84 L120 56 L144 84 L172 66 L162 102 Z" fill="url(#universalGold)" stroke="#072247" stroke-width="3.5" stroke-linejoin="round"/>
+              <circle cx="68" cy="60" r="4.5" fill="#072247"/>
+              <circle cx="120" cy="49" r="5.5" fill="#072247"/>
+              <circle cx="172" cy="60" r="4.5" fill="#072247"/>
+              <rect x="78" y="106" width="84" height="7" rx="3.5" fill="#072247"/>
+              <polygon points="120,122 146,144 120,166 94,144" fill="#072247"/>
+              <polygon points="120,129 137,144 120,159 103,144" fill="url(#universalGold)"/>
+              <path d="M68 144 L72 136 L76 144 L84 148 L76 152 L72 160 L68 152 L60 148 Z" fill="url(#universalGold)"/>
+              <path d="M172 144 L176 136 L180 144 L188 148 L180 152 L176 160 L172 152 L164 148 Z" fill="url(#universalGold)"/>
+              <path d="M56 186 C95 166, 148 164, 188 174 C148 173, 98 177, 56 186 Z" fill="#072247"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 4-in-a-Row Round Action Buttons Grid -->
+      <div class="grid-buttons" id="actionButtonsGrid"></div>
+
+      <!-- Thank You & 5 Gold Stars -->
+      <div class="thankyou-section">
+        <div class="thankyou-text">Thankyou</div>
+
+        <div class="stars-row" id="starsRow">
+          <!-- 5 Glossy Gold Stars -->
+          <svg class="star-icon" viewBox="0 0 36 36"><defs><linearGradient id="sg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffe27a"/><stop offset="55%" stop-color="#f2b938"/><stop offset="100%" stop-color="#c98b18"/></linearGradient></defs><path fill="url(#sg1)" d="M18 2.5l4.7 9.5 10.5 1.5-7.6 7.4 1.8 10.5L18 26.4l-9.4 5 1.8-10.5-7.6-7.4 10.5-1.5z"/></svg>
+          <svg class="star-icon" viewBox="0 0 36 36"><path fill="url(#sg1)" d="M18 2.5l4.7 9.5 10.5 1.5-7.6 7.4 1.8 10.5L18 26.4l-9.4 5 1.8-10.5-7.6-7.4 10.5-1.5z"/></svg>
+          <svg class="star-icon" viewBox="0 0 36 36"><path fill="url(#sg1)" d="M18 2.5l4.7 9.5 10.5 1.5-7.6 7.4 1.8 10.5L18 26.4l-9.4 5 1.8-10.5-7.6-7.4 10.5-1.5z"/></svg>
+          <svg class="star-icon" viewBox="0 0 36 36"><path fill="url(#sg1)" d="M18 2.5l4.7 9.5 10.5 1.5-7.6 7.4 1.8 10.5L18 26.4l-9.4 5 1.8-10.5-7.6-7.4 10.5-1.5z"/></svg>
+          <svg class="star-icon" viewBox="0 0 36 36"><path fill="url(#sg1)" d="M18 2.5l4.7 9.5 10.5 1.5-7.6 7.4 1.8 10.5L18 26.4l-9.4 5 1.8-10.5-7.6-7.4 10.5-1.5z"/></svg>
+        </div>
+
+        <div class="provided-by" id="providedByText">Provided by Karthik</div>
+        <div class="version-text" id="versionText">Type your version</div>
+      </div>
+
+    </div>
+
+    <!-- Bottom Decorative Waves -->
+    <svg class="wave-bottom" viewBox="0 0 430 120" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="goldWaveBottom" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#c58e22" />
+          <stop offset="50%" stop-color="#f6d365" />
+          <stop offset="100%" stop-color="#d49a26" />
+        </linearGradient>
+      </defs>
+      <!-- Left Gold & Navy Swooshes -->
+      <path d="M0 15 C45 85, 130 92, 215 120 L0 120 Z" fill="url(#goldWaveBottom)" />
+      <path d="M0 32 C38 92, 110 102, 175 120 L0 120 Z" fill="#072247" />
+      <!-- Right Gold & Navy Swooshes -->
+      <path d="M275 120 C335 95, 390 80, 430 62 L430 120 Z" fill="url(#goldWaveBottom)" />
+      <path d="M325 120 C370 104, 405 94, 430 84 L430 120 Z" fill="#072247" />
+    </svg>
+  </div>
+
+  <!-- ================= ALL-IN-ONE CONFIGURATION (ఇక్కడ మార్చుకోండి) ================= -->
+  <script>
+    const PORTAL_CONFIG = {
+      // 1. సెషన్ టైమ్ (నిమిషాలలో) - QR స్కాన్ (?scan=1) చేసినప్పుడు ఎంతసేపు పనిచేయాలో ఇవ్వండి (0 = Unlimited)
+      SESSION_MINUTES: 1,
+
+      // 2. లోగో చిత్రం URL (ఖాళీగా ఉంచితే డిఫాల్ట్ లోగో కనిపిస్తుంది)
+      LOGO_URL: "",
+
+      // 3. లోగో మీద క్లిక్ చేస్తే ఎక్కడికి వెళ్ళాలో ఆ లింక్ (ఖాళీగా ఉంచితే క్లిక్ అవ్వదు)
+      LOGO_CLICK_LINK: "https://yourwebsite.com",
+
+      // 4. బటన్ల లిస్ట్ (ఏదైనా ఒక బ్లాక్ కాపీ చేసి క్రింద పేస్ట్ చేస్తే కొత్త ఐకాన్ యాడ్ అవుతుంది!)
+      // - label: ఐకాన్ క్రింద కనిపించే పేరు (\n పెడితే రెండు లైన్లలో వస్తుంది)
+      // - link: క్లిక్ చేస్తే వెళ్ళే లింక్ (ఫోన్ కాల్ కోసం "tel:+919876543210", వాట్సాప్ కోసం "https://wa.me/919876543210")
+      // - iconUrl: మీ స్వంత ఐకాన్ ఫోటో URL ఇక్కడ ఇవ్వండి (ఖాళీగా ఉంచితే క్రింది iconType ప్రకారం ఒరిజినల్ ఐకాన్ వస్తుంది)
+      // - iconType: "google", "call", "instagram", "whatsapp", "website", "facebook", "youtube", "location", "telegram", "payment"
+      // - position: ఏ స్థానంలో కనిపించాలో ఆ నంబర్ (1, 2, 3, 4, 5, 6...)
+      BUTTONS: [
+        {
+          label: "Google\nReviews",
+          link: "https://g.page/r/YOUR_GOOGLE_REVIEW_LINK/review",
+          iconUrl: "",
+          iconType: "google",
+          position: 1
+        },
+        {
+          label: "Contact\nUs",
+          link: "tel:+919876543210",
+          iconUrl: "",
+          iconType: "call",
+          position: 2
+        },
+        {
+          label: "Instagram",
+          link: "https://instagram.com/your_username",
+          iconUrl: "",
+          iconType: "instagram",
+          position: 3
+        },
+        {
+          label: "WhatsApp",
+          link: "https://wa.me/919876543210",
+          iconUrl: "",
+          iconType: "whatsapp",
+          position: 4
+        },
+        {
+          label: "Our\nWebsite",
+          link: "https://yourwebsite.com",
+          iconUrl: "",
+          iconType: "website",
+          position: 5
+        }
+      ],
+
+      // 5. క్రింద కనిపించే పేరు
+      PROVIDED_BY: "Provided by Karthik",
+
+      // 6. వెర్షన్ కోడ్ (చిన్న అక్షరాలతో క్రింద కనిపిస్తుంది)
+      VERSION_TEXT: "Type your version"
+    };
+
+    // ================= BUILT-IN SVG ICONS LIBRARY =================
+    const BUILTIN_ICONS = {
+      google: `<svg width="32" height="32" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>`,
+      call: `<svg width="28" height="28" viewBox="0 0 24 24" fill="#ffffff"><path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C10.07 21 3 13.93 3 5a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z"/></svg>`,
+      instagram: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none"><defs><linearGradient id="igGrad" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#feda75"/><stop offset="25%" stop-color="#fa7e1e"/><stop offset="50%" stop-color="#d62976"/><stop offset="75%" stop-color="#962fbf"/><stop offset="100%" stop-color="#4f5bd5"/></linearGradient></defs><rect x="2" y="2" width="20" height="20" rx="5" fill="url(#igGrad)"/><circle cx="12" cy="12" r="4.5" stroke="#ffffff" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.3" fill="#ffffff"/></svg>`,
+      whatsapp: `<svg width="30" height="30" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="14" fill="#25D366"/><path fill="#ffffff" d="M22.9 19.3c-.3-.2-2-.9-2.3-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.2-.7-1.7-.9-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 2-.8 2.2-1.6.3-.8.3-1.4.2-1.6-.1-.1-.3-.2-.6-.4z"/></svg>`,
+      website: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+      facebook: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#1877F2"/><path fill="#ffffff" d="M15.1 12.8l.4-2.6h-2.5V8.5c0-.7.3-1.4 1.5-1.4h1.1V4.9s-1-.2-2-.2c-2 0-3.3 1.2-3.3 3.4v2H8v2.6h2.3V19h2.7v-6.2h2.1z"/></svg>`,
+      youtube: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="20" height="14" rx="4" fill="#FF0000"/><polygon points="10,9 16,12 10,15" fill="#ffffff"/></svg>`,
+      location: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#e5b343" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3" fill="#ffffff"/></svg>`,
+      telegram: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#26A5E4"/><path fill="#ffffff" d="M17.5 7.5L5.8 12c-.8.3-.8.8-.1 1l3 .9 6.9-4.4c.3-.2.6-.1.4.1l-5.6 5.1-.2 3.1c.3 0 .4-.1.6-.3l1.5-1.4 3.1 2.3c.6.3 1 .1 1.1-.5l2-9.5c.2-.8-.3-1.2-1-.9z"/></svg>`,
+      payment: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#e5b343" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>`
+    };
+
+    // ================= APPLY SETTINGS & RENDER DYNAMIC BUTTONS =================
+    const logoEl = document.getElementById("logoContainer");
+    if (PORTAL_CONFIG.LOGO_URL && PORTAL_CONFIG.LOGO_URL.trim() !== "") {
+      logoEl.innerHTML = `<img src="${PORTAL_CONFIG.LOGO_URL.trim()}" alt="Brand Logo">`;
+    }
+
+    if (PORTAL_CONFIG.LOGO_CLICK_LINK && PORTAL_CONFIG.LOGO_CLICK_LINK.trim() !== "") {
+      logoEl.href = PORTAL_CONFIG.LOGO_CLICK_LINK.trim();
+      logoEl.target = "_blank";
+      logoEl.rel = "noopener noreferrer";
+    } else {
+      logoEl.style.pointerEvents = "none";
+    }
+
+    document.getElementById("providedByText").textContent = PORTAL_CONFIG.PROVIDED_BY;
+    document.getElementById("versionText").textContent = PORTAL_CONFIG.VERSION_TEXT;
+
+    // బటన్లను డైనమిక్‌గా నిర్మించడం
+    (function renderActionButtons() {
+      const grid = document.getElementById("actionButtonsGrid");
+      if (!grid || !Array.isArray(PORTAL_CONFIG.BUTTONS)) return;
+
+      const sortedButtons = [...PORTAL_CONFIG.BUTTONS].sort(
+        (a, b) => (Number(a.position) || 99) - (Number(b.position) || 99)
+      );
+
+      let firstReviewBtn = null;
+
+      sortedButtons.forEach((btn, idx) => {
+        const a = document.createElement("a");
+        a.className = "nav-card";
+        a.href = btn.link || "#";
+
+        // ఫోన్ కాల్ (tel:) అయితే కొత్త ట్యాబ్ అవసరం లేదు
+        if (!String(btn.link).startsWith("tel:")) {
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+        }
+
+        const circle = document.createElement("div");
+        circle.className = "icon-circle";
+
+        if (btn.iconUrl && btn.iconUrl.trim() !== "") {
+          const img = document.createElement("img");
+          img.src = btn.iconUrl.trim();
+          img.alt = (btn.label || "Icon").replace(/\n/g, " ");
+          circle.appendChild(img);
+        } else {
+          const typeKey = (btn.iconType || "website").toLowerCase().trim();
+          circle.innerHTML = BUILTIN_ICONS[typeKey] || BUILTIN_ICONS.website;
+        }
+
+        const span = document.createElement("span");
+        span.className = "nav-label";
+        span.innerHTML = (btn.label || "").replace(/\n/g, "<br>");
+
+        a.appendChild(circle);
+        a.appendChild(span);
+        grid.appendChild(a);
+
+        if (!firstReviewBtn && (btn.iconType === "google" || idx === 0)) {
+          firstReviewBtn = a;
+        }
+      });
+
+      const starsRow = document.getElementById("starsRow");
+      if (starsRow && firstReviewBtn) {
+        starsRow.onclick = () => firstReviewBtn.click();
+      }
+    })();
+
+    // ================= SILENT BACKGROUND SESSION & OWNER CONTROL =================
+    (function initAccessControl() {
+      const KEY = "BP_STATE_V10";
+
+      function isPageReload() {
+        try {
+          const navEntries = performance.getEntriesByType && performance.getEntriesByType("navigation");
+          if (navEntries && navEntries.length > 0 && navEntries[0].type === "reload") {
+            return true;
+          }
+          if (window.performance && window.performance.navigation && window.performance.navigation.type === 1) {
+            return true;
+          }
+        } catch (e) {}
+        return false;
+      }
+
+      function readCookie() {
+        try {
+          const match = document.cookie.match(new RegExp("(?:^|; )" + KEY + "=([^;]*)"));
+          if (match) return JSON.parse(decodeURIComponent(match[1]));
+        } catch (e) {}
+        return null;
+      }
+
+      function getTabState() {
+        // 1. మొదట ప్రస్తుత ట్యాబ్ మెమరీ (window.name / sessionStorage) చెక్ చేయడం
+        try {
+          if (typeof window.name === "string" && window.name.startsWith(KEY + ":")) {
+            return JSON.parse(window.name.slice(KEY.length + 1));
+          }
+        } catch (e) {}
+        try {
+          const s = window.sessionStorage.getItem(KEY);
+          if (s) return JSON.parse(s);
+        } catch (e) {}
+
+        // 2. మొబైల్ బ్రౌజర్‌లో Refresh చేసినప్పుడు ట్యాబ్ మెమరీ పోతే, Reload అని నిర్ధారించుకుని బ్యాకప్ నుండి తీసుకోవడం
+        if (isPageReload()) {
+          try {
+            const ls = window.localStorage.getItem(KEY);
+            if (ls) return JSON.parse(ls);
+          } catch (e) {}
+          const ck = readCookie();
+          if (ck) return ck;
+        }
+
+        return null;
+      }
+
+      function setTabState(obj) {
+        const serialized = JSON.stringify(obj);
+        try { window.name = KEY + ":" + serialized; } catch (e) {}
+        try { window.sessionStorage.setItem(KEY, serialized); } catch (e) {}
+        try { window.localStorage.setItem(KEY, serialized); } catch (e) {}
+        try {
+          document.cookie = KEY + "=" + encodeURIComponent(serialized) + "; path=/; SameSite=Lax";
+        } catch (e) {}
+      }
+
+      function clearAllAndLock() {
+        try { window.name = ""; } catch (e) {}
+        try { window.sessionStorage.removeItem(KEY); } catch (e) {}
+        try { window.localStorage.removeItem(KEY); } catch (e) {}
+        try {
+          document.cookie = KEY + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        } catch (e) {}
+        try {
+          if (window.history && window.history.replaceState) {
+            window.history.replaceState({}, document.title, window.location.pathname);
+          }
+        } catch (e) {}
+        document.getElementById("mainAppContainer").style.display = "none";
+        document.getElementById("expiredOverlay").style.display = "flex";
+      }
+
+      function hideQueryParam() {
+        try {
+          if (window.history && window.history.replaceState) {
+            window.history.replaceState({}, document.title, window.location.pathname);
+          }
+        } catch (e) {}
+      }
+
+      const rawSearch = window.location.search || "";
+      const urlParams = new URLSearchParams(rawSearch);
+
+      const isMainAccess = urlParams.get("main") === "1" || /(?:^\?|&)main=1(?:&|$)/i.test(rawSearch);
+      const isScanned = urlParams.get("scan") === "1" || /(?:^\?|&)scan=1(?:&|$)/i.test(rawSearch);
+
+      // 1. ?main=1 నొక్కితే ఆ ట్యాబ్ ఉన్నంతవరకు అన్‌లిమిటెడ్‌గా ఓపెన్ అవుతుంది (Refresh చేసినా పోదు)
+      if (isMainAccess) {
+        setTabState({ mode: "main" });
+        hideQueryParam();
+        return;
+      }
+
+      // 2. ?scan=1 నొక్కితే కొత్తగా టైమర్ మొదలవుతుంది మరియు పైన లింక్ నుండి ?scan=1 మాయమవుతుంది
+      if (isScanned) {
+        const minutes = Number(PORTAL_CONFIG.SESSION_MINUTES);
+        const exp = (isNaN(minutes) || minutes <= 0)
+          ? (Date.now() + 100 * 365 * 24 * 60 * 60 * 1000)
+          : (Date.now() + minutes * 60 * 1000);
+        setTabState({ mode: "scan", exp: exp });
+        hideQueryParam();
+      }
+
+      // 3. అదే ట్యాబ్‌లో Refresh చేసినప్పుడు ?main=1 లేదా ?scan=1 స్థితిని కొనసాగించడం
+      const state = getTabState();
+
+      if (state && state.mode === "main") {
+        setTabState(state);
+        return;
+      }
+
+      if (state && state.mode === "scan" && state.exp > 0) {
+        if (Date.now() >= state.exp) {
+          clearAllAndLock();
+          return;
+        }
+        setTabState(state);
+        const bgTimer = setInterval(() => {
+          if (Date.now() >= state.exp) {
+            clearInterval(bgTimer);
+            clearAllAndLock();
+          }
+        }, 500);
+        return;
+      }
+
+      // 4. మామూలు లింక్ (కొత్త ట్యాబ్‌లో లేదా కాపీ చేసిన లింక్ ఓపెన్ చేస్తే) అస్సలు ఓపెన్ అవ్వదు!
+      clearAllAndLock();
+    })();
+  </script>
+
+</body>
+</html>
